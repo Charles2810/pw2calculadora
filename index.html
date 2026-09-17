@@ -107,8 +107,9 @@
   <div id="pantalla">0</div>
 
   <div class="teclas">
-    <button class="doble" onclick="limpiar()">C</button>
+    <button onclick="limpiar()">C</button>
     <button onclick="borrarUltimo()">⌫</button>
+    <button class="operador" onclick="agregarOperador('**')" title="Potencia (xʸ)">xʸ</button>
     <button class="operador" onclick="agregarOperador('/')">÷</button>
 
     <button onclick="agregarDigito('7')">7</button>
@@ -149,13 +150,13 @@
   const pantalla = document.getElementById('pantalla');
 
   function actualizarPantalla() {
-    pantalla.textContent = expresion === '' ? '0' : expresion;
+    pantalla.textContent = expresion === '' ? '0' : expresion.replace(/\*\*/g, '^');
   }
 
   function agregarDigito(digito) {
     // Evita dos puntos decimales seguidos en el mismo número
     if (digito === '.') {
-      const partes = expresion.split(/[\+\-\*\/]/);
+      const partes = expresion.split(/[\+\-\/]|\*{1,2}/);
       const numeroActual = partes[partes.length - 1];
       if (numeroActual.includes('.')) return;
     }
@@ -165,6 +166,14 @@
 
   function agregarOperador(operador) {
     if (expresion === '') return;
+
+    if (expresion.endsWith('**')) {
+      if (operador === '**') return;
+      expresion = expresion.slice(0, -2) + operador;
+      actualizarPantalla();
+      return;
+    }
+
     const ultimoCaracter = expresion.slice(-1);
     if ('+-*/'.includes(ultimoCaracter)) {
       // Reemplaza el operador anterior en vez de acumular dos seguidos
@@ -176,7 +185,11 @@
   }
 
   function borrarUltimo() {
-    expresion = expresion.slice(0, -1);
+    if (expresion.endsWith('**')) {
+      expresion = expresion.slice(0, -2);
+    } else {
+      expresion = expresion.slice(0, -1);
+    }
     actualizarPantalla();
   }
 
@@ -187,16 +200,27 @@
 
   function calcular() {
     if (expresion === '') return;
+    if (expresion.endsWith('**') || '+-*/.'.includes(expresion.slice(-1))) {
+      return;
+    }
     try {
       // Solo se permiten dígitos, punto decimal y los cuatro operadores básicos
       if (!/^[0-9.+\-*/]+$/.test(expresion)) {
         throw new Error('Expresión inválida');
       }
-      const resultado = Function('"use strict"; return (' + expresion + ')')();
+
+      let expSegura = expresion;
+      if (/^-[0-9.]+/.test(expSegura)) {
+        expSegura = expSegura.replace(/^(-[0-9.]+)/, function(match) {
+          return '(' + match + ')';
+        });
+      }
+
+      const resultado = Function('"use strict"; return (' + expSegura + ')')();
       if (!isFinite(resultado)) {
         throw new Error('División entre cero');
       }
-      expresion = String(resultado);
+      expresion = String(Math.round(resultado * 1e12) / 1e12);
       actualizarPantalla();
     } catch (error) {
       pantalla.textContent = 'Error';
