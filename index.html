@@ -1,233 +1,257 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora</title>
-<style>
-  :root {
-    --paper: #F7F7F3;
-    --ink: #1B1F1D;
-    --muted: #5B615C;
-    --accent: #2F6F4E;
-    --key-bg: #FFFFFF;
-    --key-border: #D9D7CC;
-    --op-bg: #2F6F4E;
-    --op-text: #FFFFFF;
-    --screen-bg: #12171B;
-    --screen-text: #CFE8D9;
-  }
-  @media (prefers-color-scheme: dark) {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora</title>
+  <style>
     :root {
-      --paper: #14181A;
-      --ink: #E9ECE9;
-      --muted: #A9B0AA;
-      --accent: #6FBF97;
-      --key-bg: #1D2224;
-      --key-border: #2A2F2C;
+      --paper: #F7F7F3;
+      --ink: #1B1F1D;
+      --muted: #5B615C;
+      --accent: #2F6F4E;
+      --key-bg: #FFFFFF;
+      --key-border: #D9D7CC;
       --op-bg: #2F6F4E;
-      --op-text: #E9ECE9;
-      --screen-bg: #0C1012;
+      --op-text: #FFFFFF;
+      --screen-bg: #12171B;
       --screen-text: #CFE8D9;
     }
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
-  }
-  .calculadora {
-    width: min(20rem, 92vw);
-    padding: 1.2rem;
-    border-radius: 18px;
-    border: 1px solid var(--key-border);
-    background: var(--paper);
-  }
-  h1 {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--muted);
-    margin: 0 0 0.8rem 0.2rem;
-  }
-  #pantalla {
-    background: var(--screen-bg);
-    color: var(--screen-text);
-    border-radius: 12px;
-    padding: 1.4rem 1rem;
-    text-align: right;
-    font-family: 'SFMono-Regular', Consolas, monospace;
-    font-size: 2rem;
-    margin-bottom: 0.9rem;
-    overflow-x: auto;
-    white-space: nowrap;
-    min-height: 1.4em;
-  }
-  .teclas {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.5rem;
-  }
-  button {
-    font-size: 1.1rem;
-    padding: 0.9rem 0;
-    border-radius: 10px;
-    border: 1px solid var(--key-border);
-    background: var(--key-bg);
-    color: var(--ink);
-    cursor: pointer;
-    font-family: inherit;
-  }
-  button:active { opacity: 0.75; }
-  button.operador {
-    background: var(--op-bg);
-    color: var(--op-text);
-    border-color: var(--op-bg);
-  }
-  button.igual {
-    background: var(--accent);
-    color: #FFFFFF;
-    border-color: var(--accent);
-    grid-column: span 2;
-  }
-  button.doble {
-    grid-column: span 2;
-  }
-</style>
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #14181A;
+        --ink: #E9ECE9;
+        --muted: #A9B0AA;
+        --accent: #6FBF97;
+        --key-bg: #1D2224;
+        --key-border: #2A2F2C;
+        --op-bg: #2F6F4E;
+        --op-text: #E9ECE9;
+        --screen-bg: #0C1012;
+        --screen-text: #CFE8D9;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .calculadora {
+      width: min(20rem, 92vw);
+      padding: 1.2rem;
+      border-radius: 18px;
+      border: 1px solid var(--key-border);
+      background: var(--paper);
+    }
+
+    h1 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin: 0 0 0.8rem 0.2rem;
+    }
+
+    #pantalla {
+      background: var(--screen-bg);
+      color: var(--screen-text);
+      border-radius: 12px;
+      padding: 1.4rem 1rem;
+      text-align: right;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 2rem;
+      margin-bottom: 0.9rem;
+      overflow-x: auto;
+      white-space: nowrap;
+      min-height: 1.4em;
+    }
+
+    .teclas {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+    }
+
+    button {
+      font-size: 1.1rem;
+      padding: 0.9rem 0;
+      border-radius: 10px;
+      border: 1px solid var(--key-border);
+      background: var(--key-bg);
+      color: var(--ink);
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    button:active {
+      opacity: 0.75;
+    }
+
+    button.operador {
+      background: var(--op-bg);
+      color: var(--op-text);
+      border-color: var(--op-bg);
+    }
+
+    button.igual {
+      background: var(--accent);
+      color: #FFFFFF;
+      border-color: var(--accent);
+      grid-column: span 2;
+    }
+
+    button.doble {
+      grid-column: span 2;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="calculadora">
-  <h1>Calculadora</h1>
-  <div id="pantalla">0</div>
+  <div class="calculadora">
+    <h1>Calculadora</h1>
+    <div id="pantalla">0</div>
 
-  <div class="teclas">
-    <button onclick="limpiar()">C</button>
-    <button onclick="borrarUltimo()">⌫</button>
-    <button class="operador" onclick="agregarOperador('**')" title="Potencia (xʸ)">xʸ</button>
-    <button class="operador" onclick="agregarOperador('/')">÷</button>
+    <div class="teclas">
+      <button onclick="limpiar()">C</button>
+      <button onclick="borrarUltimo()">⌫</button>
+      <button class="operador" onclick="agregarOperador('**')" title="Potencia (xʸ)">xʸ</button>
+      <button class="operador" onclick="agregarOperador('/')">÷</button>
 
-    <button onclick="agregarDigito('7')">7</button>
-    <button onclick="agregarDigito('8')">8</button>
-    <button onclick="agregarDigito('9')">9</button>
-    <button class="operador" onclick="agregarOperador('*')">×</button>
+      <button onclick="agregarDigito('7')">7</button>
+      <button onclick="agregarDigito('8')">8</button>
+      <button onclick="agregarDigito('9')">9</button>
+      <button class="operador" onclick="agregarOperador('*')">×</button>
 
-    <button onclick="agregarDigito('4')">4</button>
-    <button onclick="agregarDigito('5')">5</button>
-    <button onclick="agregarDigito('6')">6</button>
-    <button class="operador" onclick="agregarOperador('-')">−</button>
+      <button onclick="agregarDigito('4')">4</button>
+      <button onclick="agregarDigito('5')">5</button>
+      <button onclick="agregarDigito('6')">6</button>
+      <button class="operador" onclick="agregarOperador('-')">−</button>
 
-    <button onclick="agregarDigito('1')">1</button>
-    <button onclick="agregarDigito('2')">2</button>
-    <button onclick="agregarDigito('3')">3</button>
-    <button class="operador" onclick="agregarOperador('+')">+</button>
+      <button onclick="agregarDigito('1')">1</button>
+      <button onclick="agregarDigito('2')">2</button>
+      <button onclick="agregarDigito('3')">3</button>
+      <button class="operador" onclick="agregarOperador('+')">+</button>
 
-    <button onclick="agregarDigito('0')">0</button>
-    <button onclick="agregarDigito('.')">.</button>
-    <button class="igual" onclick="calcular()">=</button>
+      <button onclick="agregarDigito('0')">0</button>
+      <button onclick="agregarDigito('.')">.</button>
+      <button class="igual" onclick="calcular()">=</button>
+    </div>
   </div>
-</div>
 
-<script>
-  /*
-    Código base de la calculadora.
-    Implementa únicamente las cuatro operaciones básicas: suma, resta,
-    multiplicación y división.
+  <script>
+    /*
+      Código base de la calculadora.
+      Implementa únicamente las cuatro operaciones básicas: suma, resta,
+      multiplicación y división.
+  
+      Convención pensada para que sea fácil de ampliar:
+      cada operación nueva (por ejemplo, porcentaje o logaritmo neperiano)
+      debería agregar su propia tecla en la cuadrícula de arriba y su propia
+      función de cálculo aquí abajo, sin modificar las funciones existentes.
+    */
 
-    Convención pensada para que sea fácil de ampliar:
-    cada operación nueva (por ejemplo, porcentaje o logaritmo neperiano)
-    debería agregar su propia tecla en la cuadrícula de arriba y su propia
-    función de cálculo aquí abajo, sin modificar las funciones existentes.
-  */
+    let expresion = '';
 
-  let expresion = '';
+    const pantalla = document.getElementById('pantalla');
+    // FUNCIONALIDAD: Potenciación (xʸ)
+    // Autor: Eduard Heredia
+    // Descripción: Permite calcular base elevado a exponente.
+    // Ejemplo: 2**3 = 8, 5**2 = 25, 9**0.5 = 3
 
-  const pantalla = document.getElementById('pantalla');
 
-  function actualizarPantalla() {
-    pantalla.textContent = expresion === '' ? '0' : expresion.replace(/\*\*/g, '^');
-  }
-
-  function agregarDigito(digito) {
-    // Evita dos puntos decimales seguidos en el mismo número
-    if (digito === '.') {
-      const partes = expresion.split(/[\+\-\/]|\*{1,2}/);
-      const numeroActual = partes[partes.length - 1];
-      if (numeroActual.includes('.')) return;
+    function actualizarPantalla() {
+      pantalla.textContent = expresion === '' ? '0' : expresion.replace(/\*\*/g, '^');
     }
-    expresion += digito;
-    actualizarPantalla();
-  }
 
-  function agregarOperador(operador) {
-    if (expresion === '') return;
-
-    if (expresion.endsWith('**')) {
-      if (operador === '**') return;
-      expresion = expresion.slice(0, -2) + operador;
+    function agregarDigito(digito) {
+      // Evita dos puntos decimales seguidos en el mismo número
+      if (digito === '.') {
+        const partes = expresion.split(/[\+\-\/]|\*{1,2}/);
+        const numeroActual = partes[partes.length - 1];
+        if (numeroActual.includes('.')) return;
+      }
+      expresion += digito;
       actualizarPantalla();
-      return;
     }
 
-    const ultimoCaracter = expresion.slice(-1);
-    if ('+-*/'.includes(ultimoCaracter)) {
-      // Reemplaza el operador anterior en vez de acumular dos seguidos
-      expresion = expresion.slice(0, -1) + operador;
-    } else {
-      expresion += operador;
-    }
-    actualizarPantalla();
-  }
+    function agregarOperador(operador) {
+      if (expresion === '') return;
 
-  function borrarUltimo() {
-    if (expresion.endsWith('**')) {
-      expresion = expresion.slice(0, -2);
-    } else {
-      expresion = expresion.slice(0, -1);
-    }
-    actualizarPantalla();
-  }
-
-  function limpiar() {
-    expresion = '';
-    actualizarPantalla();
-  }
-
-  function calcular() {
-    if (expresion === '') return;
-    if (expresion.endsWith('**') || '+-*/.'.includes(expresion.slice(-1))) {
-      return;
-    }
-    try {
-      // Solo se permiten dígitos, punto decimal y los cuatro operadores básicos
-      if (!/^[0-9.+\-*/]+$/.test(expresion)) {
-        throw new Error('Expresión inválida');
+      if (expresion.endsWith('**')) {
+        if (operador === '**') return;
+        expresion = expresion.slice(0, -2) + operador;
+        actualizarPantalla();
+        return;
       }
 
-      let expSegura = expresion;
-      if (/^-[0-9.]+/.test(expSegura)) {
-        expSegura = expSegura.replace(/^(-[0-9.]+)/, function(match) {
-          return '(' + match + ')';
-        });
+      const ultimoCaracter = expresion.slice(-1);
+      if ('+-*/'.includes(ultimoCaracter)) {
+        // Reemplaza el operador anterior en vez de acumular dos seguidos
+        expresion = expresion.slice(0, -1) + operador;
+      } else {
+        expresion += operador;
       }
-
-      const resultado = Function('"use strict"; return (' + expSegura + ')')();
-      if (!isFinite(resultado)) {
-        throw new Error('División entre cero');
-      }
-      expresion = String(Math.round(resultado * 1e12) / 1e12);
       actualizarPantalla();
-    } catch (error) {
-      pantalla.textContent = 'Error';
+    }
+
+    function borrarUltimo() {
+      if (expresion.endsWith('**')) {
+        expresion = expresion.slice(0, -2);
+      } else {
+        expresion = expresion.slice(0, -1);
+      }
+      actualizarPantalla();
+    }
+
+    function limpiar() {
       expresion = '';
+      actualizarPantalla();
     }
-  }
-</script>
+
+    function calcular() {
+      if (expresion === '') return;
+      if (expresion.endsWith('**') || '+-*/.'.includes(expresion.slice(-1))) {
+        return;
+      }
+      try {
+        // Solo se permiten dígitos, punto decimal y los cuatro operadores básicos
+        if (!/^[0-9.+\-*/]+$/.test(expresion)) {
+          throw new Error('Expresión inválida');
+        }
+
+        let expSegura = expresion;
+        if (/^-[0-9.]+/.test(expSegura)) {
+          expSegura = expSegura.replace(/^(-[0-9.]+)/, function (match) {
+            return '(' + match + ')';
+          });
+        }
+
+        const resultado = Function('"use strict"; return (' + expSegura + ')')();
+        if (!isFinite(resultado)) {
+          throw new Error('División entre cero');
+        }
+        expresion = String(Math.round(resultado * 1e12) / 1e12);
+        actualizarPantalla();
+      } catch (error) {
+        pantalla.textContent = 'Error';
+        expresion = '';
+      }
+    }
+  </script>
 
 </body>
+
 </html>
