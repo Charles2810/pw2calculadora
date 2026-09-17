@@ -151,7 +151,7 @@
   const pantalla = document.getElementById('pantalla');
 
   function actualizarPantalla() {
-    pantalla.textContent = expresion === '' ? '0' : expresion;
+  pantalla.textContent = expresion === '' ? '0' : expresion.replace(/\*\*/g, '^');
   }
 
   function agregarDigito(digito) {
