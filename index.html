@@ -110,7 +110,7 @@
     <button class="doble" onclick="limpiar()">C</button>
     <button onclick="borrarUltimo()">⌫</button>
     <button class="operador" onclick="agregarOperador('/')">÷</button>
-
+    
     <button onclick="agregarDigito('7')">7</button>
     <button onclick="agregarDigito('8')">8</button>
     <button onclick="agregarDigito('9')">9</button>
@@ -128,6 +128,8 @@
 
     <button onclick="agregarDigito('0')">0</button>
     <button onclick="agregarDigito('.')">.</button>
+    <button></button>
+    <button class="operador" onclick="agregarOperador('**')">^</button>
     <button class="igual" onclick="calcular()">=</button>
   </div>
 </div>
@@ -165,6 +167,7 @@
 
   function agregarOperador(operador) {
     if (expresion === '') return;
+    if (expresion.endsWith('**')) { expresion = expresion.slice(0, -2) + operador; return actualizarPantalla(); }
     const ultimoCaracter = expresion.slice(-1);
     if ('+-*/'.includes(ultimoCaracter)) {
       // Reemplaza el operador anterior en vez de acumular dos seguidos
