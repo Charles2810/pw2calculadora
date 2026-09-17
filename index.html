@@ -93,10 +93,31 @@
       color: var(--ink);
       cursor: pointer;
       font-family: inherit;
+      transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+      user-select: none;
+    }
+
+    button:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      filter: brightness(1.03);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      button:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        filter: brightness(1.08);
+      }
     }
 
     button:active {
-      opacity: 0.75;
+      transform: scale(0.96);
+      opacity: 0.85;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
 
     button.operador {
@@ -166,14 +187,43 @@
     let expresion = '';
 
     const pantalla = document.getElementById('pantalla');
+
+    // SISTEMA MODULAR DE OPERACIONES
+    // Permite registrar y gestionar operaciones dinámicamente
+    const Calculadora = {
+      operaciones: {},
+      registrarOperacion: function (op) {
+        if (!op || !op.id) return;
+        this.operaciones[op.id] = op;
+        if (typeof actualizarPantalla === 'function') {
+          actualizarPantalla();
+        }
+      },
+      obtenerOperacion: function (id) {
+        return this.operaciones[id];
+      }
+    };
+    window.Calculadora = Calculadora;
+
     // FUNCIONALIDAD: Potenciación (xʸ)
     // Autor: Eduard Heredia
     // Descripción: Permite calcular base elevado a exponente.
     // Ejemplo: 2**3 = 8, 5**2 = 25, 9**0.5 = 3
 
-
     function actualizarPantalla() {
-      pantalla.textContent = expresion === '' ? '0' : expresion.replace(/\*\*/g, '^');
+      if (expresion === '') {
+        pantalla.textContent = '0';
+        return;
+      }
+      let texto = expresion;
+      // Aplica formateo dinámico de operaciones registradas modularmente
+      for (const id in Calculadora.operaciones) {
+        const op = Calculadora.operaciones[id];
+        if (typeof op.formatearPantalla === 'function') {
+          texto = op.formatearPantalla(texto);
+        }
+      }
+      pantalla.textContent = texto.replace(/\*\*/g, '^');
     }
 
     function agregarDigito(digito) {
@@ -251,6 +301,9 @@
       }
     }
   </script>
+
+  <!-- Módulo dinámico para la operación de potenciación -->
+  <script src="exponenciacion.js"></script>
 
 </body>
 
