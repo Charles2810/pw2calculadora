@@ -140,12 +140,10 @@
 
   <div class="teclas">
 
-    <button class="doble" onclick="limpiar()">C</button>
+    <button onclick="limpiar()">C</button>
     <button onclick="borrarUltimo()">←</button>
-    <button class="operador" onclick="agregarOperador('/')">÷</button>
-
-    <!-- NUEVA FUNCIÓN: raíz cuadrada -->
     <button class="operador" onclick="calcularRaiz()">√</button>
+    <button class="operador" onclick="agregarOperador('/')">÷</button>
 
     <button onclick="agregarDigito('7')">7</button>
     <button onclick="agregarDigito('8')">8</button>
@@ -184,14 +182,23 @@
 
   function agregarDigito(digito) {
 
+    const partes = expresion.split(/[\+\-\*\/]/);
+    const numeroActual = partes[partes.length - 1];
+
     if (digito === '.') {
-
-      const partes = expresion.split(/[\+\-\*\/]/);
-      const numeroActual = partes[partes.length - 1];
-
       if (numeroActual.indexOf('.') !== -1) {
         return;
       }
+    } else if (numeroActual === '0') {
+      /*
+        Evita ceros a la izquierda (ej: '05' pasa a '5' y '00' se mantiene como '0').
+      */
+      if (digito === '0') {
+        return;
+      }
+      expresion = expresion.slice(0, -1) + digito;
+      actualizarPantalla();
+      return;
     }
 
     expresion += digito;
@@ -276,9 +283,10 @@
       }
 
       /*
-        Calculamos la raíz cuadrada.
+        Calculamos la raíz cuadrada y redondeamos a 14 dígitos
+        para evitar desbordamiento de decimales.
       */
-      const resultado = Math.sqrt(resultadoPrevio);
+      const resultado = parseFloat(Math.sqrt(resultadoPrevio).toFixed(14));
 
       expresion = String(resultado);
 
@@ -318,7 +326,10 @@
         throw new Error('División entre cero');
       }
 
-      expresion = String(resultado);
+      /*
+        Redondeamos a 14 dígitos para evitar desbordamiento de decimales.
+      */
+      expresion = String(parseFloat(resultado.toFixed(14)));
 
       actualizarPantalla();
 
