@@ -1,0 +1,137 @@
+/* =========================================
+   DISEÑO DE LA CALCULADORA - Calculator-MDC
+   ========================================= */
+
+body {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 20px;
+}
+
+/* Contenedor principal */
+.calculadora {
+    width: min(360px, 92vw);
+    padding: 24px;
+    border-radius: 24px;
+    background: #111827;
+    border: 1px solid #334155;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+/* Título */
+.calculadora h1 {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #f8fafc;
+    margin-bottom: 18px;
+    letter-spacing: 1px;
+}
+
+/* Pantalla */
+#pantalla {
+    background: #020617;
+    color: #38bdf8;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 20px 16px;
+    margin-bottom: 18px;
+
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-align: right;
+
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Contenedor de botones */
+.teclas {
+    gap: 10px;
+}
+
+/* Botones generales */
+.teclas button {
+    min-height: 58px;
+    padding: 10px;
+
+    border: 1px solid #475569;
+    border-radius: 14px;
+
+    background: #1e293b;
+    color: #f8fafc;
+
+    font-size: 1.15rem;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+/* Efecto al pasar el mouse */
+.teclas button:hover {
+    background: #334155;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Efecto al presionar */
+.teclas button:active {
+    transform: scale(0.94);
+    opacity: 0.85;
+}
+
+/* Botones de operaciones */
+.teclas button.operador {
+    background: #2563eb;
+    border-color: #3b82f6;
+    color: white;
+}
+
+.teclas button.operador:hover {
+    background: #1d4ed8;
+}
+
+/* Botón igual */
+.teclas button.igual {
+    background: #16a34a;
+    border-color: #22c55e;
+    color: white;
+}
+
+.teclas button.igual:hover {
+    background: #15803d;
+}
+
+/* Botón C */
+.teclas button.doble {
+    background: #dc2626;
+    border-color: #ef4444;
+    color: white;
+}
+
+.teclas button.doble:hover {
+    background: #b91c1c;
+}
+
+/* Adaptación para celulares */
+@media (max-width: 480px) {
+
+    .calculadora {
+        padding: 18px;
+        border-radius: 20px;
+    }
+
+    #pantalla {
+        font-size: 1.8rem;
+        padding: 18px 12px;
+    }
+
+    .teclas button {
+        min-height: 52px;
+        font-size: 1rem;
+    }
+}
