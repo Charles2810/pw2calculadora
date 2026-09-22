@@ -1,22 +1,3 @@
-/*
- * OPERACIÓN PORCENTAJE
- * --------------------
- * Convierte el valor actual de la calculadora
- * a su equivalente porcentual dividiéndolo entre 100.
- *
- * Ejemplos:
- * 50% = 0.5
- * 25% = 0.25
- * 100% = 1
- *
- * Esta función se integra con la calculadora principal
- * utilizando las variables:
- *   - expresion
- *   - pantalla
- *   - historial
- *   - actualizarPantalla()
- */
-
 function porcentaje() {
 
   // Comprobar que exista un valor en la calculadora
