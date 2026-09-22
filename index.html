@@ -114,10 +114,16 @@
     background: var(--accent);
     color: #FFFFFF;
     border-color: var(--accent);
-    grid-column: span 2;
   }
   button.doble {
     grid-column: span 2;
+  }
+  .pantalla-wrapper #pantalla {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
   }
 </style>
 
@@ -136,8 +142,8 @@
   <div class="teclas">
     <button onclick="limpiar()">C</button>
     <button onclick="borrarUltimo()">⌫</button>
-    <button class="operador" onclick="agregarOperador('**')" title="Potencia (xʸ)">xʸ</button>
     <button class="operador" onclick="agregarOperador('/')">÷</button>
+    <button class="operador" onclick="agregarOperador('^')" title="Potencia (xʸ)">xʸ</button>
     
     <button onclick="agregarDigito('7')">7</button>
     <button onclick="agregarDigito('8')">8</button>
@@ -159,7 +165,6 @@
     <button class="operador" onclick="calcularLogaritmoNeperiano()" title="Logaritmo neperiano (ln)">ln</button>
     <button class="operador" onclick="factorial()">x!</button>
     <button class="igual" onclick="calcular()">=</button>
-    
   </div>
 </div>
 
@@ -187,7 +192,7 @@
   function agregarDigito(digito) {
     // Evita dos puntos decimales seguidos en el mismo número
     if (digito === '.') {
-      const partes = expresion.split(/[\+\-\/]|\*{1,2}/);
+      const partes = expresion.split(/[\+\-\*\/\^]|\*{1,2}/);
       const numeroActual = partes[partes.length - 1];
       if (numeroActual.includes('.')) return;
     }
@@ -197,27 +202,19 @@
 
   function agregarOperador(operador) {
     if (expresion === '') return;
-    if (expresion.endsWith('**')) {
-      if (operador === '**') return;
-      expresion = expresion.slice(0, -2) + operador;
-      return actualizarPantalla();
-    }
+    const op = (operador === '**') ? '^' : operador;
     const ultimoCaracter = expresion.slice(-1);
-    if ('+-*/'.includes(ultimoCaracter)) {
+    if ('+-*/^'.includes(ultimoCaracter)) {
       // Reemplaza el operador anterior en vez de acumular dos seguidos
-      expresion = expresion.slice(0, -1) + operador;
+      expresion = expresion.slice(0, -1) + op;
     } else {
-      expresion += operador;
+      expresion += op;
     }
     actualizarPantalla();
   }
 
   function borrarUltimo() {
-    if (expresion.endsWith('**')) {
-      expresion = expresion.slice(0, -2);
-    } else {
-      expresion = expresion.slice(0, -1);
-    }
+    expresion = expresion.slice(0, -1);
     actualizarPantalla();
   }
 
@@ -271,16 +268,16 @@
 
   function calcular() {
     if (expresion === '') return;
-    if (expresion.endsWith('**') || '+-*/.'.includes(expresion.slice(-1))) {
+    if ('+-*/^.'.includes(expresion.slice(-1))) {
       return;
     }
     try {
-      // Solo se permiten dígitos, punto decimal y los cuatro operadores básicos más potencia
-      if (!/^[0-9.+\-*/]+$/.test(expresion)) {
+      // Se permiten dígitos, punto decimal y los operadores básicos más la potencia
+      if (!/^[0-9.+\-*/^]+$/.test(expresion)) {
         throw new Error('Expresión inválida');
       }
 
-      let expSegura = expresion;
+      let expSegura = expresion.replace(/\^/g, '**');
       if (/^-[0-9.]+/.test(expSegura)) {
         expSegura = expSegura.replace(/^(-[0-9.]+)/, function(match) {
           return '(' + match + ')';
@@ -293,7 +290,7 @@
       }
 
       if (historial) {
-        historial.textContent = expresion.replace(/\*\*/g, '^') + ' =';
+        historial.textContent = expresion + ' =';
       }
 
       expresion = String(Math.round(resultado * 1e12) / 1e12);
@@ -303,6 +300,48 @@
       pantalla.textContent = 'Error';
       expresion = '';
     }
+  }
+
+  function calcularFactorial() {
+    if (expresion === '') return;
+
+    // Separamos la expresión conservando los operadores, para ubicar el último número escrito
+    const partes = expresion.split(/([+\-*/^]|\*{2})/);
+    const ultimoNumero = partes[partes.length - 1];
+
+    if (ultimoNumero === '') return;
+
+    const numero = Number(ultimoNumero);
+
+    // El factorial solo está definido para enteros no negativos
+    if (!Number.isInteger(numero) || numero < 0) {
+      if (historial) historial.textContent = '';
+      pantalla.textContent = 'Error';
+      expresion = '';
+      return;
+    }
+
+    // A partir de 171! el resultado se vuelve Infinity en JavaScript
+    if (numero > 170) {
+      if (historial) historial.textContent = '';
+      pantalla.textContent = 'Error';
+      expresion = '';
+      return;
+    }
+
+    let resultado = 1;
+    for (let i = 2; i <= numero; i++) {
+      resultado *= i;
+    }
+
+    if (historial) {
+      historial.textContent = ultimoNumero + '! =';
+    }
+
+    // Reemplazamos solo el último número por su factorial, dejando intacto lo demás
+    partes[partes.length - 1] = String(resultado);
+    expresion = partes.join('');
+    actualizarPantalla();
   }
 </script>
 <script src="factorial.js"></script>
