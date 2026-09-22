@@ -162,8 +162,9 @@
 
     <button onclick="agregarDigito('0')">0</button>
     <button onclick="agregarDigito('.')">.</button>
+    <button class="operador" onclick="calcularLogaritmoNeperiano()" title="Logaritmo neperiano (ln)">ln</button>
+    <button class="operador" onclick="factorial()">x!</button>
     <button class="igual" onclick="calcular()">=</button>
-    <button class="operador" onclick="calcularFactorial()" title="Factorial (n!)">n!</button>
   </div>
 </div>
 
@@ -221,6 +222,48 @@
     expresion = '';
     if (historial) historial.textContent = '';
     actualizarPantalla();
+  }
+
+  /*
+    FUNCIÓN NUEVA: LOGARITMO NEPERIANO (ln)
+
+    Toma el número (o el resultado de la expresión) que está en pantalla
+    y calcula su logaritmo neperiano (base e) con Math.log().
+    Solo es válido para valores mayores que cero.
+  */
+  function calcularLogaritmoNeperiano() {
+    if (expresion === '') return;
+    try {
+      // Solo se permiten dígitos, punto decimal y los cuatro operadores básicos más potencia
+      if (!/^[0-9.+\-*/]+$/.test(expresion)) {
+        throw new Error('Expresión inválida');
+      }
+
+      let expSegura = expresion;
+      if (/^-[0-9.]+/.test(expSegura)) {
+        expSegura = expSegura.replace(/^(-[0-9.]+)/, function(match) {
+          return '(' + match + ')';
+        });
+      }
+
+      const valor = Function('"use strict"; return (' + expSegura + ')')();
+      // El logaritmo neperiano solo existe para números mayores que cero
+      if (!isFinite(valor) || valor <= 0) {
+        throw new Error('Logaritmo inválido');
+      }
+
+      if (historial) {
+        historial.textContent = 'ln(' + expresion.replace(/\*\*/g, '^') + ') =';
+      }
+
+      const resultado = Math.log(valor);
+      expresion = String(Math.round(resultado * 1e12) / 1e12);
+      actualizarPantalla();
+    } catch (error) {
+      if (historial) historial.textContent = '';
+      pantalla.textContent = 'Error';
+      expresion = '';
+    }
   }
 
   function calcular() {
@@ -301,5 +344,6 @@
     actualizarPantalla();
   }
 </script>
+<script src="factorial.js"></script>
 </body>
 </html>
